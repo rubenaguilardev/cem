@@ -4,6 +4,7 @@ const MongoClient = require('mongodb').MongoClient
 
 const app = express()
 const PORT = 3001
+app.set('view engine', 'ejs')
 app.use(express.urlencoded({ extended: true }))
 
 const connectionString = `mongodb+srv://@cluster0.uvc26cg.mongodb.net/`
@@ -18,10 +19,10 @@ MongoClient.connect(connectionString)
         .find()
         .toArray()
         .then(results => {
-          console.log(results)
-          res.sendFile(__dirname + '/index.html')
+          res.render('index.ejs', { quotes: results })
         })
         .catch(error => console.error(error))
+
     })
 
     app.post('/quotes', (req, res) => {
